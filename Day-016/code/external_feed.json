@@ -1,0 +1,21 @@
+[
+  {
+    "ioc": "malicious-domain.com",
+    "type": "domain",
+    "confidence": "high",
+    "source": "AlienVault"
+  },
+  {
+    "ioc": "google.com",
+    "type": "domain"
+  },
+  {
+    "ioc": "103.45.67.89",
+    "type": "ip",
+    "source": "VirusTotal"
+  },
+  {
+    "ioc": "8.8.8.8",
+    "type": "ip"
+  }
+]
