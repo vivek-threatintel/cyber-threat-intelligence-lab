@@ -1,0 +1,18 @@
+{
+  "malicious-domain.com": {
+    "country": "Russia",
+    "first_seen": "2024-12-10",
+    "malware_family": "RedLine"
+  },
+  "103.45.67.89": {
+    "country": "China",
+    "first_seen": "2025-01-05",
+    "malware_family": "AgentTesla"
+  },
+  "evil-c2.net": {
+    "country": "Unknown",
+    "first_seen": "2025-02-01",
+    "malware_family": "CobaltStrike"
+  }
+}
+
