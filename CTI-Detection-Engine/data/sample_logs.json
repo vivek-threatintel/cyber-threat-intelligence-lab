@@ -1,0 +1,22 @@
+[
+  {
+    "ip": "103.45.67.89",
+    "failed_logins": 10,
+    "data_transfer": "high"
+  },
+  {
+    "ip": "8.8.8.8",
+    "failed_logins": 0,
+    "data_transfer": "low"
+  },
+  {
+    "ip": "malicious-domain.com",
+    "failed_logins": 2,
+    "data_transfer": "medium"
+  },
+  {
+    "ip": "192.168.1.10",
+    "failed_logins": 1,
+    "data_transfer": "low"
+  }
+]
