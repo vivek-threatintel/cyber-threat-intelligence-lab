@@ -1,5 +1,5 @@
 import json
-
+from threat_api_client import query_threat_api, parse_api_response, enrich_ioc_data
 # ────────────────────────────────────────────────
 # 1. Data & Baseline
 # ────────────────────────────────────────────────
@@ -82,13 +82,29 @@ def detect_anomaly(event, baseline):
 def match_intelligence(ip, feed_iocs, lookup_db):
     intel_match = ip in feed_iocs
     enriched = {}
-    if intel_match and ip in lookup_db:
+
+    # Pehle local lookup check
+    if ip in lookup_db:
         info = lookup_db[ip]
         enriched = {
             "country": info.get("country", "N/A"),
             "malware_family": info.get("malware_family", "N/A"),
-            "first_seen": info.get("first_seen", "N/A")
+            "first_seen": info.get("first_seen", "N/A"),
+            "source": "Local Lookup"
         }
+        return intel_match, enriched
+
+    # Agar local mein nahi mila aur intel_match hai, API se check kar
+    if intel_match:
+        api_data = query_threat_api(ip)
+        parsed = parse_api_response(api_data)
+        enriched = {
+            "abuse_score": parsed.get("abuse_score", 0),
+            "country": parsed.get("country", "N/A"),
+            "isp": parsed.get("isp", "N/A"),
+            "source": "API (Simulated AbuseIPDB)"
+        }
+
     return intel_match, enriched
 
 
@@ -157,6 +173,10 @@ for event in event_log:
             print(f"    Country: {enriched['country']}")
             print(f"    Malware Family: {enriched['malware_family']}")
             print(f"    First Seen: {enriched['first_seen']}")
+
+            print("  Threat Intelligence Enrichment:")
+            for k, v in enriched.items():
+                print(f"    {k}: {v}")
 
         if reasons:
             print("  Anomaly Reasons:")
