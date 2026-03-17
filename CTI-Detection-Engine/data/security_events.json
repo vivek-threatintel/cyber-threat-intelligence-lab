@@ -1,0 +1,6 @@
+[
+ {"ip":"103.45.67.89","failed_logins":10,"data_transfer":900,"requests":50},
+ {"ip":"8.8.8.8","failed_logins":0,"data_transfer":50,"requests":10},
+ {"ip":"23.21.11.90","failed_logins":3,"data_transfer":200,"requests":15},
+ {"ip":"192.168.1.10","failed_logins":1,"data_transfer":40,"requests":8}
+]
