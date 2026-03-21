@@ -1,5 +1,0 @@
-[
- {"ioc":"malicious-domain.com","type":"domain"},
- {"ioc":"103.45.67.89","type":"ip"},
- {"ioc":"evil-c2.net","type":"domain"}
-]
