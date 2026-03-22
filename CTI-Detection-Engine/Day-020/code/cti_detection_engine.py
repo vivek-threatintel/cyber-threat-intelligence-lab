@@ -91,6 +91,51 @@ def match_intelligence(ip, feed_iocs, lookup_db):
         }
     return intel_match, enriched
 
+# src/cti_detection_engine.py mein niche ye add karo
+
+def apply_rules(event):
+    """
+    Core Rule Engine: Har event ko security rules ke against check karta hai.
+    """
+    alerts = []
+    
+    # Rule 1: Brute Force Logic (Simple version for single event)
+    if event.get('failed_attempts', 0) >= 5:
+        alerts.append(f"🚨 [BRUTE FORCE] User {event['user']} exceeded failed login threshold.")
+
+    # Rule 2: Network Anomaly
+    authorized_ips = ["192.168.1.1", "10.0.0.5"]
+    if event.get('ip') not in authorized_ips:
+        alerts.append(f"⚠️  [NETWORK] Connection from unauthorized IP: {event['ip']}")
+
+    # Rule 3: Data Exfiltration
+    if event.get('data_mb', 0) > 500:
+        alerts.append(f"🔥 [EXFILTRATION] High data transfer ({event['data_mb']}MB) from {event['user']}")
+
+    return alerts
+
+def process_security_event(event):
+    """
+    Main Entry Point: Ye rules check karega + Campaign bhi dhoondhega.
+    """
+    print(f"\n🔍 Analyzing Event from User: {event['user']}...")
+    
+    # 1. Rule Match
+    rule_alerts = apply_rules(event)
+    for alert in rule_alerts:
+        print(alert)
+
+    # 2. Campaign Correlation (Jo humne Day 28 mein kiya tha)
+    # Agar IP malicious hai toh uska poora khandaan (Campaign) dhoondo
+    from cti_detection_engine import detect_campaign # Self-import check
+    campaign_info = detect_campaign(event['ip'])
+    
+    if campaign_info["detected"]:
+        print(f"🔗 [CORRELATION] This event is part of: {campaign_info['campaign']}")
+        print(f"📦 Related IOCs to block: {', '.join(campaign_info['related'])}")
+
+    if not rule_alerts and not campaign_info["detected"]:
+        print("✅ Event looks safe.")
 
 def generate_alert(is_anomaly, intel_match):
     if is_anomaly and intel_match:
